@@ -9,19 +9,18 @@ public class SnowService : ISnowService
     }
     public async Task<string> GetCities(string country)
     {
-        var postModel = new  SnowRequestCities(StringConstants.Usa);
-        var responseTask = _httpClient.PostAsJsonAsync("countries/cities", postModel);
+        var postModel = new SnowRequestCities(country);
+        var responseTask =await _httpClient.PostAsJsonAsync("countries/cities", postModel);
 
-        var response = await responseTask;
-        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        if (responseTask.StatusCode == System.Net.HttpStatusCode.OK)
         {
-            var result = await response.Content.ReadFromJsonAsync<SnowResponseModel>();
+            var result = await responseTask.Content.ReadFromJsonAsync<SnowResponseModel>();
             if(result?.Data?.Count > 0)
             {
                 return string.Join(",", result.Data);
             }
         }
-        return await response.Content.ReadAsStringAsync();
+        return await responseTask.Content.ReadAsStringAsync();
 
     }
 }

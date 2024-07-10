@@ -9,7 +9,7 @@ public class SnowService : ISnowService
     }
     public async Task<string> GetCities(string country)
     {
-        var postModel = new { Country = country };
+        var postModel = new  SnowRequestCities(StringConstants.Usa);
         var responseTask = _httpClient.PostAsJsonAsync("countries/cities", postModel);
 
         var response = await responseTask;
